@@ -5,8 +5,8 @@
 # Melody
 
 ### Description
-Melody is a GraphQL Apollo server.
-A demo can be found on Heroku: https://comingsoon.herokuapp.com
+Melody is a GraphQL Apollo server: https://melody-apollo-server.herokuapp.com/api
+
 
 ### Tech Stack
 - Apollo Server
@@ -15,54 +15,49 @@ A demo can be found on Heroku: https://comingsoon.herokuapp.com
 
 ### Setup & Launch
 
-#### Node Launch
-1. In the terminal, `node index.js`
+#### PostgreSQL-as-a-Container
+A docker-compose file is available to spin up a Docker version of PostgreSQL if there isn't already a local instance running.
+Execute the following command:  
 
-A successful response is `🚀  Server ready at http://localhost:4000/
-`
+`docker-compose up -d`
 
-2. Navigate to http://localhost:4000
-3. Click the **Query your server** link to enter the *Apollo Studio Sandbox*, then in the middle Operation pane, run the following query:
+This instance of Postgres is configured to run on port 5433 - remember to update the database URL in the .env file if you plan
+on using PostgreSQL this way.
 
-```
-query GetBooks {
-    books {
-        title
-        author
-    }
-} 
-```
+#### Prisma
+Prisma is a tool used to define the database schema. The schema file can be accessed and edited at src/prisma/schema.prisma.
 
-The result should be displayed in the right-hand side pane:
+NOTE - Each time this **schema.prisma** file is altered, the database migration command has to be executed:
 
-```
-{
-  "data": {
-    "books": [
-      {
-        "title": "The Awakening",
-        "author": "Kate Chopin"
-      },
-      {
-        "title": "City of Glass",
-        "author": "Paul Auster"
-      }
-    ]
-  }
-}
+`npx prisma migrate dev --name init`
 
-```
+This command has been included in the package.json script block so running `npm run migrate` will achieve the same result.
 
-<br/>
+#### Prisma Studio
+Prisma Studio is a simple GUI interface to explore and manipulate the data in the database (comparable to the H2 console). 
+Simply run:
+`npx prisma studio` and navigate to localhost:5555
 
-#### Docker Launch
-Coming soon
+#### NPM Launch
+`npm run dev`
 
 #### Query Instructions
-Coming soon
+Start the server with the above command, then navigate to localhost:4000/api and enter the playground by clicking on
+'Query your server'. Run the following query:
+
+```
+query {
+  boards {
+    id
+    title
+    description
+    path
+  }
+}
+```
 
 <br/>
 
 #### Acknowledgements
 
-- [ApolloGraphQL.com : *Getting Started*](https://www.apollographql.com/docs/apollo-server/getting-started/)
+- [TomRay.dev : *How to setup & deploy an Express GraphQL server with Apollo, Prisma, TypeScript, Postgres & Heroku*](https://tomray.dev/setup-and-deploy-graphql-server).
